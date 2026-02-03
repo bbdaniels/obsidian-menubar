@@ -390,8 +390,8 @@ struct FileRow: View {
     @State private var isHovered = false
     @State private var showPreview = false
     @State private var isPreviewHovered = false
+    @State private var showWorkItem: DispatchWorkItem?
     @State private var hideWorkItem: DispatchWorkItem?
-    @State private var mouseExitTime: Date?
 
     var body: some View {
         HStack {
@@ -408,33 +408,36 @@ struct FileRow: View {
         .contentShape(Rectangle())
         .onTapGesture {
             // Click opens floating window
+            showWorkItem?.cancel()
             showPreview = false
             FloatingWindowManager.shared.openFloatingWindow(for: file)
         }
         .onHover { hovering in
             isHovered = hovering
 
-            // Cancel any pending hide work
+            // Cancel any pending show/hide work
+            showWorkItem?.cancel()
+            showWorkItem = nil
             hideWorkItem?.cancel()
             hideWorkItem = nil
 
             if hovering {
-                mouseExitTime = nil
-                showPreview = true
+                // Debounce: wait before showing preview
+                let workItem = DispatchWorkItem {
+                    if self.isHovered {
+                        self.showPreview = true
+                    }
+                }
+                showWorkItem = workItem
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: workItem)
             } else {
-                let currentExitTime = Date()
-                mouseExitTime = currentExitTime
-                // Create a new work item for hiding the preview
+                // Delay before hiding to allow mouse to move to preview
                 let workItem = DispatchWorkItem {
                     if !self.isHovered && !self.isPreviewHovered {
-                        if let exitTime = self.mouseExitTime, exitTime == currentExitTime {
-                            self.showPreview = false
-                        }
+                        self.showPreview = false
                     }
                 }
                 hideWorkItem = workItem
-
-                // Schedule the work item with a delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: workItem)
             }
         }
@@ -445,12 +448,21 @@ struct FileRow: View {
             }
             .onHover { hovering in
                 isPreviewHovered = hovering
-                if !hovering && !isHovered {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+
+                // Cancel any pending hide when entering preview
+                if hovering {
+                    hideWorkItem?.cancel()
+                    hideWorkItem = nil
+                } else if !isHovered {
+                    // Schedule hide when leaving preview (if not on row)
+                    hideWorkItem?.cancel()
+                    let workItem = DispatchWorkItem {
                         if !self.isHovered && !self.isPreviewHovered {
                             self.showPreview = false
                         }
                     }
+                    hideWorkItem = workItem
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: workItem)
                 }
             }
         }
