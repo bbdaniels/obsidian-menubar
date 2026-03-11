@@ -22,7 +22,7 @@ struct NotesBarApp: App {
             ContentView()
                 .environmentObject(vaultViewModel)
         } label: {
-            Image(systemName: "archivebox.fill")
+            Image(systemName: "archivebox")
         }
         .menuBarExtraStyle(.window)
     }
