@@ -13,7 +13,8 @@ obsidian-menubar is a modern macOS menu bar application designed for Obsidian us
 - 🔍 **Instant Smart Search:** Find notes instantly with real-time search results across your selected vault.
 - 📂 **Intuitive File Browser:** Navigate your vault's folder structure directly within the app.
 - 👀 **Quick Markdown Preview:** Hover over a note in the list to see its contents without opening Obsidian.
-- 🪟 **Floating Windows:** Pop out any note into a persistent floating window that stays visible while you work.
+- 🔎 **Find in Preview:** Use Cmd+F to search within note previews.
+- 🪟 **Floating Panel:** Click the menu bar icon to toggle a sleek floating panel that joins all spaces and works alongside full-screen apps.
 - 🔗 **Seamless Obsidian Integration:** Leverages Obsidian's URI scheme for smooth note opening.
 - 📝 **Quick Note Creator:** Create new notes with a single click.
 - 🔒 **Secure Vault Handling:** Uses security-scoped bookmarks for safe and persistent access to your vault files.
