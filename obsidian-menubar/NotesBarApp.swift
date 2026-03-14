@@ -64,6 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 panel.setFrameOrigin(NSPoint(x: x, y: y))
             }
             panel.makeKeyAndOrderFront(nil)
+            NotificationCenter.default.post(name: NSNotification.Name("RefreshVaultFiles"), object: nil)
         }
     }
 }
