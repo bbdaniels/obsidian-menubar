@@ -1,5 +1,7 @@
 # obsidian-menubar
 
+> **Note:** This project has been folded into [ClaudeHUD](https://github.com/bbdaniels/ClaudeHUD), which includes the Obsidian vault browser as a built-in tab alongside Claude conversations, session history, and more. New development will happen there. This repository is archived for reference.
+
 **Quick access to your Obsidian notes, right from your macOS menu bar.**
 
 obsidian-menubar is a modern macOS menu bar application designed for Obsidian users who want lightning-fast access to their knowledge base without switching contexts.
